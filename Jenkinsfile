@@ -16,7 +16,12 @@ pipeline {
 
         stage ('Build') {
             steps {
+                parallel(install: {
                 sh 'mvn -Dmaven.test.failure.ignore=true install' 
+                },  sonar: {
+                    sh "mvn sonar:sonar -Dsonar.host.url=${env.SONARQUBE_HOST}"
+                })
+
             }
             post {
                 success {
@@ -24,5 +29,11 @@ pipeline {
                 }
             }
         }
+
+   
+
+
+
+
     }
 }
