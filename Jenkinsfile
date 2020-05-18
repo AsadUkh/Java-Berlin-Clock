@@ -1,3 +1,5 @@
+def projectName = 'berlin-clock'
+def projectKey = 'berlin-clock'
 pipeline {
     agent any
     tools {
@@ -5,15 +7,21 @@ pipeline {
         jdk 'jdk11'
     }
     stages {
-        stage ('Initialize') {
-            steps {
+        
+		    stage('SCM') {
+            steps{
+           git 'https://github.com/ssqasim-cc/K8s-CI-Jenkins.git'
+            }
+        }
+
+		stage ('Initialize') {           
+		   steps {
                 sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
                 '''
             }
-        }
-
+        }		
         stage ('Build') {
             steps {
                 parallel(install: {
@@ -29,11 +37,6 @@ pipeline {
                 }
             }
         }
-
-   
-
-
-
 
     }
 }
